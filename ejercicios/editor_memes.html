@@ -18,8 +18,49 @@
 			$(function() {
 				var elCanvas = $("canvas")[0];
 				var contexto = elCanvas.getContext("2d");
-
+				var enlace = $("#link-guardar");
 				
+				//definir estilos de texto
+				contexto.font = "50px Arial";
+				contexto.strokeStyle = "black";
+				contexto.fillStyle = "white";
+				contexto.textAlign = "center";				
+				
+                //cargar una imagen en el canvas
+                var imagen = new Image();
+                imagen.src = "../imagenes/grumpy_cat.jpg";
+                
+                //obtengo las cajas
+                var mensajes = $(".mensajes");
+                
+				//la imagen se pinta en canvas hasta que se ha cargado
+				imagen.onload = function(){
+				    contexto.drawImage(imagen, 0, 0, 400, 500);
+				};	
+				
+				mensajes.keyup(function(evento){
+				    var textoArriba = $("#mensaje-arriba").val();
+				    var textoAbajo = $("#mensaje-abajo").val();
+				    //limpiar el canvas
+				    contexto.clearRect;
+				    //cargamos la imagen de nuevo
+				    contexto.drawImage(imagen, 0, 0, 400, 500);
+				    //pintar el texto de arriba
+				    contexto.strokeText(textoArriba, 200, 75);
+				    contexto.fillText(textoArriba, 200, 75);
+				    //pintar el texto de abajo
+				    contexto.strokeText(textoAbajo, 200, 470);
+				    contexto.fillText(textoAbajo, 200, 470);				    
+				});
+				
+				enlace.click(function(evento){
+				    //obtener la imagen en base 64
+				    var imagen64 = elCanvas.toDataURL();
+				    enlace.attr("href", imagen64);
+				    //sobre el objeto del DOM del enlace
+				    var enlaceDOM = enlace[0];
+				    enlaceDOM.download = "meme.jpg";
+				});
 			});
 		</script>
 

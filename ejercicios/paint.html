@@ -22,10 +22,44 @@
 				//variables globales
 				var xInicial = 0;
 				var yInicial = 0;
+				var xFinal = 0;
+				var yFinal = 0;
+				//obtener las cajas a manipular
+				var cajitas = $(".tipo-color");
+				var lienzo = $("#lienzo");
 				//calculamos la posicion(coordenadas) del canvas en el documento con jquery
-				var canvasPosY = $("#lienzo").offset().top;
-				var canvasPosX = $("#lienzo").offset().left;
-
+				var canvasPosY = lienzo.offset().top;
+				var canvasPosX = lienzo.offset().left;
+				//obtener el contexto
+				var contexto = lienzo[0].getContext("2d");
+				//definir estilos de linea pos default
+				contexto.strokeStyle = "green";
+				contexto.lineWidth = 10;
+				contexto.lineCap = "round";
+				//escuchar cuando entro al canvas
+				lienzo.mouseover(function(evento) {
+					//obtener coordenadas iniciales
+					xInicial = evento.pageX - canvasPosX;
+					yInicial = evento.pageY - canvasPosY;
+					lienzo.mousemove(function(evento) {
+					    //obtengo coordenadas finales
+						xFinal = evento.pageX - canvasPosX;
+						yFinal = evento.pageY - canvasPosY;
+						contexto.beginPath();
+						contexto.moveTo(xInicial, yInicial);
+						contexto.lineTo(xFinal, yFinal);
+						contexto.stroke();
+						//actualizar coordenadas iniciales
+						xInicial = xFinal;
+						yInicial = yFinal;
+					});
+				});
+				//escucho el evento click sobre las cajitas
+				cajitas.click(function(evento){
+				    var clikeada = $(evento.target);
+				    var color = clikeada.css("background-color");
+				    contexto.strokeStyle = color;
+				});
 			});
         </script>
     </head>
